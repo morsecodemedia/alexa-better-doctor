@@ -1,0 +1,23 @@
+{
+  "name": "alexa-skill-betterdoctor-api",
+  "version": "1.0.0",
+  "description": "An Alexa skill that is utilizing the BetterDoctor API to provide users search results on doctors, practices and insurances accepted in their area.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "alexa",
+    "skill",
+    "settings"
+  ],
+  "author": "morsecodemedia",
+  "license": "MIT",
+  "dependencies": {
+    "alexa-sdk": "^1.0.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/morsecodemedia/better-doctor"
+  }
+}

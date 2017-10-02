@@ -1,0 +1,73 @@
+{
+	"intents": [
+	  {
+		"name": "AboutIntent",
+		"samples": [],
+		"slots": []
+	  },
+	  {
+		"name": "AMAZON.CancelIntent",
+		"samples": []
+	  },
+	  {
+		"name": "AMAZON.HelpIntent",
+		"samples": []
+	  },
+	  {
+		"name": "AMAZON.NoIntent",
+		"samples": []
+	  },
+	  {
+		"name": "AMAZON.StopIntent",
+		"samples": []
+	  },
+	  {
+		"name": "AMAZON.YesIntent",
+		"samples": []
+	  },
+	  {
+		"name": "GetAddress",
+		"samples": [
+		  "Where am I located",
+		  "Where do I live",
+		  "What's my location",
+		  "What's my address",
+		  "What is my location",
+		  "What is my address"
+		],
+		"slots": []
+	  },
+	  {
+		"name": "DoctorIntent",
+		"samples": [
+		  "Recommend a doctor",
+		  "Recommend a doctor within {distance} miles",
+		  "Recommend a doctor's office",
+		  "Recommend a doctor's office within {distance} miles",
+		  "I need a doctor",
+		  "I need a doctor within {distance} miles",
+		  "I need a doctor's office",
+		  "I need a doctor's office within {distance} miles",
+		  "Where's the closest doctor's office",
+		  "Where's the closest doctor's office within {distance} miles",
+		  "Where's the closest doctor",
+		  "Where's the closest doctor within {distance} miles",
+		  "Where's the closest doctor's office to my house",
+		  "Where's the closest doctor to my house",
+		  "Where's the closest doctor within {distance} miles of my house",
+		  "Where's the closest doctor's office within {distance} miles of my house",
+		  "Find me a doctor",
+		  "Find me a doctor within {distance} miles",
+		  "Find me a doctor's office",
+		  "Find me a doctor's office within {distance} miles"
+		],
+		"slots": [
+		  {
+			"name": "distance",
+			"type": "AMAZON.NUMBER",
+			"samples": []
+		  }
+		]
+	  }
+	]
+  }
