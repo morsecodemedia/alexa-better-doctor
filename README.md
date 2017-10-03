@@ -16,14 +16,14 @@ Once you clone down the repository, you will need to run `npm install` to get th
 #### Alexa Skill ID
 You will need to get your Skill ID and add it to the file outlined below. The reason for this, is that the skill requires the user to grant permissions to get the location of the Alexa enabled device. Since at the time of development, geolocation is not an option for Alexa devices, the location is "hardcoded" to the device itself. That is the address the skill will be looking for.
 
-In `/src/index.js` look for the following line and add your skill id.
+In [/src/index.js](https://github.com/morsecodemedia/better-doctor/blob/master/src/index.js) look for the following line and add your skill id.
 
 	const APP_ID = ""; // This value would be your Skill ID. You can find this on https://developer.amazon.com/
 
 #### Google Maps API Key
 You will also need to get a Google Maps API key. Unfortunately, at this time, the BetterDoctor API requires latitude/longitude coordinates for its searches. So the skill will take the address provided from the Alexa device and geocode it before making a request to the BetterDoctor API.
 
-In `/src/Handlers.js` look for the following line and add your api key.
+In [/src/Handlers.js](https://github.com/morsecodemedia/better-doctor/blob/master/src/Handlers.js) look for the following line and add your api key.
 
 	const googleMapsApiKey = ""; // This value would be your Google Maps API Key. You can get one at https://console.developers.google.com
 
@@ -33,10 +33,10 @@ In `/src/?.js` look for the following line and add your api key.
 	const betterDoctorApiKey = ""; // This value would be your BetterDoctor API Key. You can get one at https://developer.betterdoctor.com
 
 ### Intents & Slots
-The intent schema JSON file is found in `/speachAssets`.
+The intent schema JSON file is found in [/speachAssets](https://github.com/morsecodemedia/better-doctor/tree/master/speechAssets).
 
 ### Lambda functionality
-All functionality that gets uploaded to Lambda is found in `/src`.
+All functionality that gets uploaded to Lambda is found in [/src](https://github.com/morsecodemedia/better-doctor/tree/master/src).
 To package up the source files for upload to Lambda, go to the root directory of the project and run the following:
 
 	zip -r packagedSource.zip *
