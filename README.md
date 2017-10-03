@@ -14,11 +14,11 @@ In `/src/index.js` look for the following line and add your app id.
 #### Google Maps API Key
 In `/src/Handlers.js` look for the following line and add your api key.
 
-	const googleMapsApiKey = ""; // Google Maps API Key goes here
+	const googleMapsApiKey = ""; // This value would be your Google Maps API Key. You can get one at https://console.developers.google.com
 
 #### BetterDoctor API Key
 In `/src/?.js` look for the following line and add your api key.
-	const betterDoctorApiKey = ""; // BetterDoctor API Key goes here
+	const betterDoctorApiKey = ""; // This value would be your BetterDoctor API Key. You can get one at https://developer.betterdoctor.com
 
 ### Intents & Slots
 The intent schema JSON file is found in `/speachAssets`.

@@ -77,7 +77,7 @@ const getAddressHandler = function() {
     const alexaDeviceAddressClient = new AlexaDeviceAddressClient(apiEndpoint, deviceId, consentToken);
     let deviceAddressRequest = alexaDeviceAddressClient.getFullAddress();
 
-	const googleMapsApiKey = "AIzaSyDlB1GKL6iJlYLTr6Tv7V006riuFtxNleY"; // Google Maps API Key goes here
+	const googleMapsApiKey = "AIzaSyDlB1GKL6iJlYLTr6Tv7V006riuFtxNleY"; // This value would be your Google Maps API Key. You can get one at https://console.developers.google.com
 
     deviceAddressRequest.then((addressResponse) => {
         switch(addressResponse.statusCode) {
