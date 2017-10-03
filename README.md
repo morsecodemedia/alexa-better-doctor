@@ -3,6 +3,23 @@ An Alexa skill that is utilizing the BetterDoctor API to provide users search re
 
 ## Repository Documentation
 Once you clone down the repository, you will need to run `npm install` to get the required packages.
+
+### App IDs and API Keys
+You will need to set a few keys and IDs for this all to work.
+#### Alexa App ID
+In `/src/index.js` look for the following line and add your app id.
+
+	const APP_ID = ""; // This value would be your Skill ID. You can find this on https://developer.amazon.com/
+
+#### Google Maps API Key
+In `/src/Handlers.js` look for the following line and add your api key.
+
+	const googleMapsApiKey = ""; // Google Maps API Key goes here
+
+#### BetterDoctor API Key
+In `/src/?.js` look for the following line and add your api key.
+	const betterDoctorApiKey = ""; // BetterDoctor API Key goes here
+
 ### Intents & Slots
 The intent schema JSON file is found in `/speachAssets`.
 
