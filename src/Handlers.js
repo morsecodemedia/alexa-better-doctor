@@ -14,6 +14,7 @@ const Intents = require('./Intents');
 const Events = require('./Events');
 const Messages = require('./Messages');
 
+
 /**
  * Another Possible value if you only want permissions for the country and postal code is:
  * read::alexa:device:all:address:country_and_postal_code
@@ -76,11 +77,51 @@ const getAddressHandler = function() {
     const alexaDeviceAddressClient = new AlexaDeviceAddressClient(apiEndpoint, deviceId, consentToken);
     let deviceAddressRequest = alexaDeviceAddressClient.getFullAddress();
 
+	const googleMapsApiKey = "AIzaSyDlB1GKL6iJlYLTr6Tv7V006riuFtxNleY"; // Google Maps API Key goes here
+
     deviceAddressRequest.then((addressResponse) => {
         switch(addressResponse.statusCode) {
             case 200:
                 console.log("Address successfully retrieved, now responding to user.");
                 const address = addressResponse.address;
+				const fullAddress = `${address['addressLine1']}, ${address['stateOrRegion']}, ${address['postalCode']}`;
+				const googleMapsClient = require('@google/maps').createClient({
+					key: googleMapsApiKey,
+					Promise: Promise // 'Promise' is the native constructor.
+				});
+
+				console.info("Starting geocoding of device address");
+				googleMapsClient.geocode({
+					address: fullAddress
+				}).asPromise()
+				.then((response) => {
+					console.log(response.json.results);
+					switch(response.json.results.status) {
+						case 'OK':
+							console.log("Address successfully geoencoded.");
+							console.log(response.json.results.geometry.location);
+							return response.json.results.geometry.location;
+						break;
+						case 'ZERO_RESULTS':
+							console.log("ZERO_RESULTS");
+						break;
+						case 'OVER_QUERY_LIMIT':
+							console.log("OVER_QUERY_LIMIT");
+						break;
+						case 'REQUEST_DENIED':
+							console.log("REQUEST_DENIED");
+						break;
+						case 'INVALID_REQUEST':
+							console.log("INVALID_REQUEST");
+						break;
+						case 'UNKNOWN_ERROR':
+							console.log("UNKNOWN_ERROR");
+						break;
+					}
+				})
+				.catch((err) => {
+				  console.log(err);
+				});
 
                 const ADDRESS_MESSAGE = Messages.ADDRESS_AVAILABLE +
                     `${address['addressLine1']}, ${address['stateOrRegion']}, ${address['postalCode']}`;

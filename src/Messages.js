@@ -4,9 +4,9 @@
  * This file contains a map of messages used by the skill.
  */
 
-const WELCOME = "Welcome to the Sample Device Address API Skill!";
+const WELCOME = "Welcome to BetterDoctor!";
 
-const WHAT_DO_YOU_WANT = "What do you want to ask?";
+const WHAT_DO_YOU_WANT = "How may I help you today?";
 
 const NOTIFY_MISSING_PERMISSIONS = "Please enable Location permissions in the Amazon Alexa app.";
 
@@ -18,7 +18,7 @@ const ERROR = "Uh Oh. Looks like something went wrong.";
 
 const LOCATION_FAILURE = "There was an error with the Device Address API. Please try again.";
 
-const GOODBYE = "Bye! Thanks for using the Sample Device Address API Skill!";
+const GOODBYE = "Be well!";
 
 const UNHANDLED = "This skill doesn't support that. Please ask something else.";
 
