@@ -1,7 +1,14 @@
 # BetterDoctor
 An Alexa skill that is utilizing the BetterDoctor API to provide users search results on doctors, practices and insurances accepted in their area.
 
-## Repository Documentation
+## Alexa Skill Documentation
+This skill requires you to allow permissions to get your device's location. This is because this skill will find doctors/practices based on your location.
+### Intents
+	//TODO
+### Slots
+	//TODO
+
+## Developer Documentation
 Once you clone down the repository, you will need to run `npm install` to get the required packages.
 
 ### App IDs and API Keys
@@ -34,12 +41,8 @@ To package up the source files for upload to Lambda, go to the root directory of
 
 	zip -r packagedSource.zip *
 
-## API Documentation
+### API Documentations
+#### Google Maps
+https://github.com/googlemaps/google-maps-services-js
+#### BetterDoctor
 https://betterdoctor.com/developers/
-
-## Alexa Skill Documentation
-This skill requires you to allow permissions to get your device's location. This is because this skill will find doctors/practices based on your location.
-### Intents
-	//TODO
-### Slots
-	//TODO
