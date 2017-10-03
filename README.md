@@ -18,6 +18,7 @@ In `/src/Handlers.js` look for the following line and add your api key.
 
 #### BetterDoctor API Key
 In `/src/?.js` look for the following line and add your api key.
+
 	const betterDoctorApiKey = ""; // This value would be your BetterDoctor API Key. You can get one at https://developer.betterdoctor.com
 
 ### Intents & Slots
