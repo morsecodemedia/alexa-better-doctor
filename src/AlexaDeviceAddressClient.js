@@ -1,7 +1,5 @@
 'use strict';
-
-const Https = require('https');
-
+const https = require('https');
 /**
  * This is a small wrapper client for the Alexa Address API.
  */
@@ -9,15 +7,15 @@ class AlexaDeviceAddressClient {
 
     /**
      * Retrieve an instance of the Address API client.
-     * @param apiEndpoint the endpoint of the Alexa APIs.
-     * @param deviceId the device ID being targeted.
+     * @param alexaAPIEndpoint the endpoint of the Alexa APIs.
+     * @param deviceID the device ID being targeted.
      * @param consentToken valid consent token.
      */
-    constructor(apiEndpoint, deviceId, consentToken) {
+    constructor(alexaAPIEndpoint, deviceID, consentToken) {
         console.log("Creating AlexaAddressClient instance.");
-        this.deviceId = deviceId;
+        this.deviceID = deviceID;
         this.consentToken = consentToken;
-        this.endpoint = apiEndpoint.replace(/^https?:\/\//i, "");
+        this.endpoint = alexaAPIEndpoint.replace(/^https?:\/\//i, "");
     }
 
     /**
@@ -27,7 +25,7 @@ class AlexaDeviceAddressClient {
      * @return {Promise} promise for the request in flight.
      */
     getFullAddress() {
-        const options = this.__getRequestOptions(`/v1/devices/${this.deviceId}/settings/address`);
+        const options = this.__getRequestOptions(`/v1/devices/${this.deviceID}/settings/address`);
 
         return new Promise((fulfill, reject) => {
             this.__handleDeviceAddressApiRequest(options, fulfill, reject);
@@ -42,7 +40,7 @@ class AlexaDeviceAddressClient {
      */
     getCountryAndPostalCode() {
         const options = this.__getRequestOptions(
-            `/v1/devices/${this.deviceId}/settings/address/countryAndPostalCode`);
+            `/v1/devices/${this.deviceID}/settings/address/countryAndPostalCode`);
 
         return new Promise((fulfill, reject) => {
             this.__handleDeviceAddressApiRequest(options, fulfill, reject);
@@ -58,7 +56,7 @@ class AlexaDeviceAddressClient {
      * @private
      */
     __handleDeviceAddressApiRequest(requestOptions, fulfill, reject) {
-        Https.get(requestOptions, (response) => {
+        https.get(requestOptions, (response) => {
             console.log(`Device Address API responded with a status code of : ${response.statusCode}`);
 
             response.on('data', (data) => {
@@ -87,7 +85,8 @@ class AlexaDeviceAddressClient {
         return {
             hostname: this.endpoint,
             path: path,
-            method: 'GET',
+			method: 'GET',
+			port: 443,
             'headers': {
                 'Authorization': 'Bearer ' + this.consentToken
             }

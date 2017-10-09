@@ -15,7 +15,9 @@
   "license": "MIT",
   "dependencies": {
     "@google/maps": "^0.4.3",
-    "alexa-sdk": "^1.0.8"
+    "alexa-sdk": "^1.0.8",
+    "https": "^1.0.0",
+    "q": "^1.5.0"
   },
   "repository": {
     "type": "git",

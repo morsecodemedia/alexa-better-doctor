@@ -1,4 +1,10 @@
 'use strict';
+const googleMapsAPIKey 	= '';
+const $q = require('q');
+const googleMapsClient 	= require('@google/maps').createClient({
+	Promise: $q.Promise,
+	key: googleMapsAPIKey
+})
 
 /**
  * This class contains all handler function definitions
@@ -13,16 +19,6 @@ const AlexaDeviceAddressClient = require('./AlexaDeviceAddressClient');
 const Intents = require('./Intents');
 const Events = require('./Events');
 const Messages = require('./Messages');
-
-
-/**
- * Another Possible value if you only want permissions for the country and postal code is:
- * read::alexa:device:all:address:country_and_postal_code
- * Be sure to check your permissions settings for your skill on https://developer.amazon.com/
- */
-const ALL_ADDRESS_PERMISSION = "read::alexa:device:all:address";
-
-const PERMISSIONS = [ALL_ADDRESS_PERMISSION];
 
 /**
  * This is the handler for the NewSession event.
@@ -62,66 +58,39 @@ const getAddressHandler = function() {
     // If we have not been provided with a consent token, this means that the user has not
     // authorized your skill to access this information. In this case, you should prompt them
     // that you don't have permissions to retrieve their address.
-    if(!consentToken) {
-        this.emit(":tellWithPermissionCard", Messages.NOTIFY_MISSING_PERMISSIONS, PERMISSIONS);
-
-        // Lets terminate early since we can't do anything else.
+    if (!consentToken) {
+        this.emit(":tellWithPermissionCard", Messages.NOTIFY_MISSING_PERMISSIONS, permissions);
         console.log("User did not give us permissions to access their address.");
         console.info("Ending getAddressHandler()");
         return;
     }
 
-    const deviceId = this.event.context.System.device.deviceId;
-    const apiEndpoint = this.event.context.System.apiEndpoint;
+    const deviceID = this.event.context.System.device.deviceId;
+    const alexaAPIEndpoint = this.event.context.System.apiEndpoint;
 
-    const alexaDeviceAddressClient = new AlexaDeviceAddressClient(apiEndpoint, deviceId, consentToken);
+    const alexaDeviceAddressClient = new AlexaDeviceAddressClient(alexaAPIEndpoint, deviceID, consentToken);
     let deviceAddressRequest = alexaDeviceAddressClient.getFullAddress();
-
-	const googleMapsApiKey = "AIzaSyDlB1GKL6iJlYLTr6Tv7V006riuFtxNleY"; // This value would be your Google Maps API Key. You can get one at https://console.developers.google.com
 
     deviceAddressRequest.then((addressResponse) => {
         switch(addressResponse.statusCode) {
             case 200:
-                console.log("Address successfully retrieved, now responding to user.");
-                const address = addressResponse.address;
-				const fullAddress = `${address['addressLine1']}, ${address['stateOrRegion']}, ${address['postalCode']}`;
-				const googleMapsClient = require('@google/maps').createClient({
-					key: googleMapsApiKey,
-					Promise: Promise // 'Promise' is the native constructor.
-				});
-
-				console.info("Starting geocoding of device address");
-				googleMapsClient.geocode({
-					address: fullAddress
-				}).asPromise()
-				.then((response) => {
-					console.log(response.json.results);
-					switch(response.json.results.status) {
-						case 'OK':
-							console.log("Address successfully geoencoded.");
-							console.log(response.json.results.geometry.location);
-							return response.json.results.geometry.location;
-						break;
-						case 'ZERO_RESULTS':
-							console.log("ZERO_RESULTS");
-						break;
-						case 'OVER_QUERY_LIMIT':
-							console.log("OVER_QUERY_LIMIT");
-						break;
-						case 'REQUEST_DENIED':
-							console.log("REQUEST_DENIED");
-						break;
-						case 'INVALID_REQUEST':
-							console.log("INVALID_REQUEST");
-						break;
-						case 'UNKNOWN_ERROR':
-							console.log("UNKNOWN_ERROR");
-						break;
-					}
-				})
-				.catch((err) => {
-				  console.log(err);
-				});
+                console.log('Address successfully retrieved, now responding to user.');
+				const address = addressResponse.address;
+				const alexaDeviceLocation = `${address['addressLine1']}, ${address['stateOrRegion']}, ${address['postalCode']}`;
+				if (alexaDeviceLocation) {
+					console.info('Starting geocoding of device address');
+					geocodeLocation(alexaDeviceLocation).then(function(res) {
+						if(res) {
+							console.log(res.geometry.location);
+							var res = "Your location is currently set ";
+							res += "to " + location;
+							var t = "Your current location";
+							el.emit(":tellWithCard", res, t, res);
+						} else {
+							console.log('no results');
+						}
+					});
+				}
 
                 const ADDRESS_MESSAGE = Messages.ADDRESS_AVAILABLE +
                     `${address['addressLine1']}, ${address['stateOrRegion']}, ${address['postalCode']}`;
@@ -135,7 +104,7 @@ const getAddressHandler = function() {
                 break;
             case 403:
                 console.log("The consent token we had wasn't authorized to access the user's address.");
-                this.emit(":tellWithPermissionCard", Messages.NOTIFY_MISSING_PERMISSIONS, PERMISSIONS);
+                this.emit(":tellWithPermissionCard", Messages.NOTIFY_MISSING_PERMISSIONS, permissions);
                 break;
             default:
                 this.emit(":ask", Messages.LOCATION_FAILURE, Messages.LOCATION_FAILURE);
@@ -148,8 +117,46 @@ const getAddressHandler = function() {
         this.emit(":tell", Messages.ERROR);
         console.error(error);
         console.info("Ending getAddressHandler()");
-    });
+	});
 };
+
+
+const geocodeLocation = function(address) {
+	let d = $q.defer();
+	googleMapsClient.geocode({
+		address: address
+	}, function(err, resp) {
+		if (!err) {
+			let res = resp.json;
+			let data = res.results[0];
+			switch(data.status) {
+				case 'OK':
+					let addr = data.formatted_address;
+					let a = addr.replace(", USA", "");
+					data.formatted_address = a;
+					d.resolve(data);
+					console.log("Address successfully geocoded.");
+				break;
+				case 'ZERO_RESULTS':
+					console.log("ZERO_RESULTS");
+				break;
+				case 'OVER_QUERY_LIMIT':
+					console.log("OVER_QUERY_LIMIT");
+				break;
+				case 'REQUEST_DENIED':
+					console.log("REQUEST_DENIED");
+				break;
+				case 'INVALID_REQUEST':
+					console.log("INVALID_REQUEST");
+				break;
+				case 'UNKNOWN_ERROR':
+					console.log("UNKNOWN_ERROR");
+				break;
+			}
+		}
+	});
+	return d.promise;
+}
 
 /**
  * This is the handler for the SessionEnded event. Refer to

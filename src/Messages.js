@@ -14,7 +14,7 @@ const NO_ADDRESS = "It looks like you don't have an address set. You can set you
 
 const ADDRESS_AVAILABLE = "Here is your full address: ";
 
-const ERROR = "Uh Oh. Looks like something went wrong.";
+const ERROR = "Uh Oh. Looks like something went wrong with retrieving your device's location.";
 
 const LOCATION_FAILURE = "There was an error with the Device Address API. Please try again.";
 

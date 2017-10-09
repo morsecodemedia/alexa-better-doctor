@@ -1,21 +1,31 @@
 'use strict';
 
-// External imports
-const Alexa = require('alexa-sdk');
+// Configurations
+const alexaSkillID 		= 'amzn1.ask.skill.bda901f1-063c-4cee-ab8d-98c4f12d2f3c';
+const googleMapsAPIKey 	= '';
+const alexaSDK 			= require('alexa-sdk');
+const $q        		= require('q');
+
+const googleMapsClient 	= require('@google/maps').createClient({
+	Promise: $q.Promise,
+	key: googleMapsAPIKey
+})
+
+// Another Possible value if you only want permissions for the country and postal code is: read::alexa:device:all:address:country_and_postal_code
+// Be sure to check your permissions settings for your skill on https://developer.amazon.com/
+const addressPermissions = 'read::alexa:device:all:address'
+const permissions = [addressPermissions]
 
 // Local imports
 const Handlers = require('./Handlers');
 
-// Constants
-const APP_ID = "amzn1.ask.skill.bda901f1-063c-4cee-ab8d-98c4f12d2f3c"; // This value would be your Skill ID. You can find this on https://developer.amazon.com/
-
 exports.handler = function (event, context, callback) {
-    let alexa = Alexa.handler(event, context);
+	let alexa = alexaSDK.handler(event, context)
 
-    alexa.appId = APP_ID;
-    alexa.registerHandlers(Handlers);
+    alexa.skillID = alexaSkillID
+    alexa.registerHandlers(Handlers)
 
-    console.log(`Beginning execution for skill with APP_ID=${alexa.appId}`);
-    alexa.execute();
-    console.log(`Ending execution  for skill with APP_ID=${alexa.appId}`);
-};
+    console.log(`Beginning execution for skill with skillID=${alexa.skillID}`)
+    alexa.execute()
+    console.log(`Ending execution for skill with skillID=${alexa.skillID}`)
+}
