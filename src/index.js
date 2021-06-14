@@ -1,7 +1,7 @@
 'use strict';
 
 // Configurations
-const alexaSkillID 		= 'amzn1.ask.skill.bda901f1-063c-4cee-ab8d-98c4f12d2f3c';
+const alexaSkillID 		= '';
 const googleMapsAPIKey 	= '';
 const alexaSDK 			= require('alexa-sdk');
 const $q        		= require('q');

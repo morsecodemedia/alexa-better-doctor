@@ -78,10 +78,10 @@ const getAddressHandler = function() {
 				const address = addressResponse.address;
 				const alexaDeviceLocation = `${address['addressLine1']}, ${address['stateOrRegion']}, ${address['postalCode']}`;
 				if (alexaDeviceLocation) {
-					console.info('Starting geocoding of device address');
 					geocodeLocation(alexaDeviceLocation).then(function(res) {
+						console.info('Starting geocoding of device address');
 						if(res) {
-							console.log(res.geometry.location);
+							console.log(res);
 							var res = "Your location is currently set ";
 							res += "to " + location;
 							var t = "Your current location";
@@ -122,11 +122,13 @@ const getAddressHandler = function() {
 
 
 const geocodeLocation = function(address) {
+	console.log('geocodelocation function: '+ address);
 	let d = $q.defer();
 	googleMapsClient.geocode({
 		address: address
 	}, function(err, resp) {
 		if (!err) {
+			console.log('kinda shitballs??');
 			let res = resp.json;
 			let data = res.results[0];
 			switch(data.status) {
@@ -135,6 +137,7 @@ const geocodeLocation = function(address) {
 					let a = addr.replace(", USA", "");
 					data.formatted_address = a;
 					d.resolve(data);
+					console.log(data.formatted_address);
 					console.log("Address successfully geocoded.");
 				break;
 				case 'ZERO_RESULTS':
@@ -153,6 +156,9 @@ const geocodeLocation = function(address) {
 					console.log("UNKNOWN_ERROR");
 				break;
 			}
+		} else {
+			console.log('shitballs');
+			console.log(err);
 		}
 	});
 	return d.promise;
